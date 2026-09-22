@@ -1,4 +1,4 @@
-import { randomBytes, randomInt, randomUUID } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import {COLORS,DIRS,createSeed,generatePuzzle,replay,samePoint,type Move} from '../src/engine';
 import {COUNTDOWN_MILLISECONDS,MATCH_MILLISECONDS,MAX_PLAYERS,type PublicPuzzle,type RoomSnapshot,type Seat,type SubmitResult,type Stage} from '../src/multiplayer';
 
