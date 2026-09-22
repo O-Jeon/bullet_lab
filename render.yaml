@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: bullet-lab-game
+    runtime: node
+    plan: free
+    buildCommand: npm install --include=dev --no-audit --no-fund && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
