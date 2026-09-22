@@ -1,7 +1,7 @@
 {
   "name": "bullet-lab",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently -k -n SERVER,WEB -c cyan,blue \"tsx watch server/index.ts\" \"vite --host 0.0.0.0\"",
@@ -10,7 +10,8 @@
     "build": "tsc -b && vite build && esbuild server/index.ts --bundle --platform=node --format=esm --packages=external --outfile=dist-server/index.mjs",
     "start": "node dist-server/index.mjs",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "vitest run"
+    "test": "vitest run",
+    "curate:puzzles": "tsx scripts/curate-bank.ts 120"
   },
   "dependencies": {
     "express": "^5.1.0",
@@ -33,5 +34,7 @@
     "vite": "^6.0.0",
     "vitest": "^2.1.8"
   },
-  "engines": {"node": ">=20"}
+  "engines": {
+    "node": ">=20"
+  }
 }

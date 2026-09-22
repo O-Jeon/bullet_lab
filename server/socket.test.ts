@@ -1,7 +1,7 @@
 import {afterEach,describe,expect,it} from 'vitest';
 import type {AddressInfo} from 'node:net';
 import {io as socketClient,type Socket} from 'socket.io-client';
-import {generatePuzzle} from '../src/engine';
+import {getCompetitivePuzzle} from '../src/catalog';
 import type {QueueStatus,Result,RoomSnapshot,Seat,SubmitResult} from '../src/multiplayer';
 import {createGameServer} from './index';
 import {RoomManager} from './rooms';
@@ -34,7 +34,7 @@ describe('Socket.IO live match',()=>{
     const start=await a.timeout(5_000).emitWithAck('room:start',{}) as Result<object>;
     expect(start.ok).toBe(true);
     await new Promise(resolve=>setTimeout(resolve,3_050));
-    const path=generatePuzzle(123456).solution;
+    const path=getCompetitivePuzzle(123456).solution;
     const score=await b.timeout(5_000).emitWithAck('room:submit',{moves:path}) as Result<SubmitResult>;
     expect(score.ok).toBe(true);
     const state=server.rooms.snapshot(create.data.room.code) as RoomSnapshot;

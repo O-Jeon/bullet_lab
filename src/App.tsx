@@ -14,7 +14,7 @@ export default function App(){
     setScreen(next);
   };
   return <div className="app-shell">
-    <header className="topbar"><a className="brand" href="/" onClick={event=>{event.preventDefault();pick('solo');}}><span className="brand-icon">✳</span><span>BULLET<span className="brand-light">LAB</span></span><span className="brand-beta">BETA 0.3</span></a>
+    <header className="topbar"><a className="brand" href="/" onClick={event=>{event.preventDefault();pick('solo');}}><span className="brand-icon">✳</span><span>BULLET<span className="brand-light">LAB</span></span><span className="brand-beta">BETA 0.4</span></a>
       <nav className="top-nav" aria-label="게임 모드"><button className={screen==='solo'?'active':''} onClick={()=>pick('solo')}>혼자 하기</button><button className={screen==='online'?'active':''} onClick={()=>pick('online')}>친구 · 랜덤 대전 <span className="live-dot"/></button></nav>
     </header>
     {screen==='solo'?<SoloGame/>:<OnlineGame/>}

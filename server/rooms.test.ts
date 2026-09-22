@@ -1,5 +1,6 @@
 import {beforeEach,describe,expect,it} from 'vitest';
-import {generatePuzzle} from '../src/engine';
+import {getCompetitivePuzzle,MAX_COMPETITIVE_MOVES} from '../src/catalog';
+import {COLORS,DIRS,replay,slide} from '../src/engine';
 import {RoomError,RoomManager} from './rooms';
 let manager:RoomManager;
 beforeEach(()=>{manager=new RoomManager(()=>123456);});
@@ -30,7 +31,7 @@ describe('friend rooms',()=>{
 describe('instant finish and rematch',()=>{
   it('locks the round as soon as the first verified solution arrives',()=>{
     const {code,friend}=makeRoom();manager.start('host',5_000);
-    const moves=generatePuzzle(123456).solution;
+    const moves=getCompetitivePuzzle(123456).solution;
     expect(()=>manager.submit('host',moves,5_100)).toThrow(/카운트다운/);
     expect(()=>manager.submit('host',[{robot:'blue',direction:'invalid'}],9_000)).toThrow(/이동 기록/);
     const answer=manager.submit('friend',moves,9_000);
@@ -45,7 +46,7 @@ describe('instant finish and rematch',()=>{
   });
   it('accepts rematch requests from all connected players and starts automatically',()=>{
     const {code}=makeRoom();manager.start('host',5_000);
-    manager.submit('host',generatePuzzle(123456).solution,9_000);
+    manager.submit('host',getCompetitivePuzzle(123456).solution,9_000);
     manager.requestRematch('friend',10_000);
     expect(manager.snapshot(code)?.stage).toBe('finished');
     expect(manager.snapshot(code)?.players.find(p=>p.name==='친구')?.readyForRematch).toBe(true);
@@ -59,7 +60,7 @@ describe('instant finish and rematch',()=>{
   });
   it('does not force a rematch with only one connected participant',()=>{
     const {code,friend}=makeRoom();manager.start('host',5_000);
-    manager.submit('host',generatePuzzle(123456).solution,9_000);
+    manager.submit('host',getCompetitivePuzzle(123456).solution,9_000);
     manager.requestRematch('host',10_000);
     manager.leave('friend',10_100);
     expect(manager.snapshot(code)?.stage).toBe('finished');
@@ -97,7 +98,7 @@ describe('random matchmaking',()=>{
     expect(manager.enqueueRandom('A','a',2).status).toBe('queued');
     expect(manager.enqueueRandom('B','b',3).status).toBe('queued');
     expect(()=>manager.create('A','a')).toThrow(/매칭/);
-    expect(manager.cancelQueue('a')).toBe(2);
+    expect(manager.cancelQueue('a')).toEqual({size:2,rule:'race'});
     expect(manager.queueStatus(2).waiting).toBe(0);
     manager.disconnect('b');
     expect(manager.queueStatus(3).waiting).toBe(0);
@@ -108,5 +109,54 @@ describe('random matchmaking',()=>{
     const found=manager.enqueueRandom('B','b',2);
     if(found.status!=='matched')throw new Error('Expected match');
     expect(()=>manager.join(found.seats[0].seat.room.code,'stranger','c')).toThrow(/랜덤/);
+  });
+});
+
+
+describe('certified difficulty and two matchmaking rules',()=>{
+  it('never sends tutorial-level puzzles to competitive rooms',()=>{
+    const {code}=makeRoom();manager.start('host',5_000);
+    const puzzle=manager.snapshot(code)!.puzzle!;
+    const certified=getCompetitivePuzzle(123456);
+    expect(puzzle).toEqual({robots:certified.robots,target:certified.target,goal:certified.goal});
+  });
+  it('keeps the fewest-moves round running after the first successful submission',()=>{
+    const host=manager.create('방장','a',1_000,'fewest');
+    manager.join(host.room.code,'친구','b',undefined,1_050);
+    manager.start('a',5_000);
+    const puzzle=getCompetitivePuzzle(123456);
+    const solution=puzzle.solution;
+    const end=replay(puzzle.robots,solution)!;
+    const detour=COLORS.flatMap(color=>color===puzzle.target?[]:DIRS.map(direction=>({robot:color,direction})))
+      .find(move=>slide(end,move.robot,move.direction)!==null)!;
+    const withDetour=[...solution,detour];
+    expect(withDetour).toHaveLength(solution.length+1);
+    expect(withDetour.length).toBeLessThanOrEqual(MAX_COMPETITIVE_MOVES);
+    const first=manager.submit('a',withDetour,9_000);
+    expect(first.result.improved).toBe(true);
+    expect(manager.snapshot(host.room.code)?.stage).toBe('playing');
+    manager.submit('b',solution,9_500);
+    expect(manager.snapshot(host.room.code)?.stage).toBe('playing');
+    manager.tick(128_000);
+    expect(manager.snapshot(host.room.code)?.stage).toBe('finished');
+    expect(manager.snapshot(host.room.code)?.winnerId).toBe(manager.snapshot(host.room.code)?.players.find(p=>p.name==='친구')?.id);
+  });
+  it('uses earliest valid submission for ties and rejects submissions over 20 moves',()=>{
+    const host=manager.create('방장','a',1_000,'fewest');manager.join(host.room.code,'친구','b',undefined,1_050);
+    manager.start('a',5_000);
+    const solution=getCompetitivePuzzle(123456).solution;
+    expect(()=>manager.submit('a',Array(21).fill(solution[0]),9_000)).toThrow(/유효한/);
+    manager.submit('a',solution,9_000);manager.submit('b',solution,9_100);
+    manager.tick(128_000);
+    expect(manager.snapshot(host.room.code)?.winnerId).toBe(host.playerId);
+  });
+  it('separates random waiting queues by BOTH size and mode',()=>{
+    expect(manager.enqueueRandom('A','a',2,1_000,'fewest').status).toBe('queued');
+    expect(manager.enqueueRandom('B','b',2,1_100,'race').status).toBe('queued');
+    const result=manager.enqueueRandom('C','c',2,1_200,'fewest');
+    expect(result.status).toBe('matched');
+    if(result.status==='matched')expect(result.seats[0].seat.room.rule).toBe('fewest');
+    expect(manager.queueStatus(2,'race').waiting).toBe(1);
+    expect(manager.queueStatus(2,'fewest').waiting).toBe(0);
   });
 });

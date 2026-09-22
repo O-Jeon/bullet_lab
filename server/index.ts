@@ -5,7 +5,7 @@ import path from 'node:path';
 import {Server,type Socket} from 'socket.io';
 import {RoomError,RoomManager} from './rooms';
 import type {
-  CreateRequest,Empty,JoinRequest,QueueRequest,QueueStatus,RandomSize,
+  CreateRequest,Empty,JoinRequest,QueueRequest,QueueStatus,RandomSize,MatchRule,
   Result,Seat,SubmitRequest,SubmitResult,
 } from '../src/multiplayer';
 
@@ -18,9 +18,9 @@ export function createGameServer(rooms=new RoomManager()){
   app.use(express.static(dist));
   app.get(/.*/,(_req,res)=>res.sendFile(path.join(dist,'index.html')));
   function broadcast(code:string){const snapshot=rooms.snapshot(code);if(snapshot)io.to(code).emit('room:state',snapshot);}
-  function broadcastQueue(size:RandomSize){
-    const status=rooms.queueStatus(size);
-    for(const id of rooms.queueSockets(size))io.to(id).emit('match:status',status);
+  function broadcastQueue(size:RandomSize,rule:MatchRule){
+    const status=rooms.queueStatus(size,rule);
+    for(const id of rooms.queueSockets(size,rule))io.to(id).emit('match:status',status);
   }
   io.on('connection',(socket:Socket)=>{
     const handle=<T>(ack:((r:Result<T>)=>void)|undefined,fn:()=>T)=>{
@@ -29,7 +29,7 @@ export function createGameServer(rooms=new RoomManager()){
       catch(error){ack({ok:false,error:error instanceof RoomError?error.message:'요청을 처리하지 못했어. 잠시 후 다시 시도해 줘.'});}
     };
     socket.on('room:create',(payload:CreateRequest,ack:(r:Result<Seat>)=>void)=>handle(ack,()=>{
-      const seat=rooms.create(payload?.name,socket.id);socket.join(seat.room.code);
+      const seat=rooms.create(payload?.name,socket.id,Date.now(),payload?.rule);socket.join(seat.room.code);
       broadcast(seat.room.code);return seat;
     }));
     socket.on('room:join',(payload:JoinRequest,ack:(r:Result<Seat>)=>void)=>handle(ack,()=>{
@@ -39,7 +39,7 @@ export function createGameServer(rooms=new RoomManager()){
       return {room:seat.room,playerId:seat.playerId,token:seat.token};
     }));
     socket.on('match:queue',(payload:QueueRequest,ack:(r:Result<QueueStatus>)=>void)=>handle(ack,()=>{
-      const result=rooms.enqueueRandom(payload?.name,socket.id,payload?.size);
+      const result=rooms.enqueueRandom(payload?.name,socket.id,payload?.size,Date.now(),payload?.rule);
       if(result.status==='matched'){
         for(const entry of result.seats){
           const participant=io.sockets.sockets.get(entry.socketId);
@@ -47,11 +47,11 @@ export function createGameServer(rooms=new RoomManager()){
         }
         broadcast(result.seats[0].seat.room.code);
       }
-      broadcastQueue(result.status==='matched'?result.size:result.queue.size);
-      return result.status==='matched'?{size:result.size,waiting:0}:result.queue;
+      broadcastQueue(result.status==='matched'?result.size:result.queue.size,result.status==='matched'?result.rule:result.queue.rule);
+      return result.status==='matched'?{size:result.size,rule:result.rule,waiting:0}:result.queue;
     }));
     socket.on('match:cancel',(_payload:Empty,ack:(r:Result<Empty>)=>void)=>handle(ack,()=>{
-      const size=rooms.cancelQueue(socket.id);if(size!==null)broadcastQueue(size);return {};
+      const queue=rooms.cancelQueue(socket.id);if(queue)broadcastQueue(queue.size,queue.rule);return {};
     }));
     socket.on('room:leave',(_payload:Empty,ack:(r:Result<Empty>)=>void)=>handle(ack,()=>{
       const code=rooms.leave(socket.id);if(code){socket.leave(code);broadcast(code);}return {};
@@ -68,7 +68,7 @@ export function createGameServer(rooms=new RoomManager()){
     }));
     socket.on('disconnect',()=>{
       const code=rooms.disconnect(socket.id);if(code)broadcast(code);
-      for(const size of [2,3,4] as const)broadcastQueue(size);
+      for(const size of [2,3,4] as const)for(const rule of ['race','fewest'] as const)broadcastQueue(size,rule);
     });
   });
   const ticker=setInterval(()=>{for(const code of rooms.tick())broadcast(code);},250);

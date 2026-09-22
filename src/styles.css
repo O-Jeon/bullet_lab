@@ -29,3 +29,10 @@
 .match-result-modal .result-actions button:last-child{background:#edf3f8;color:#54677d}
 .match-result-modal .result-actions button:disabled{opacity:.53;cursor:not-allowed}
 @media(max-width:600px){.match-result-modal{padding:20px 14px}.match-result-modal .result-actions{grid-template-columns:1fr}}
+
+/* v0.4: clearly selectable multiplayer rules on desktop and mobile */
+.match-rule-select{margin:10px 0 12px;grid-template-columns:repeat(2,minmax(0,1fr))}.match-rule-select button{white-space:normal;line-height:1.5;font-size:13px;min-height:48px;padding:9px 5px}.board-wrap{overflow:hidden}.panel-index{overflow-wrap:anywhere}
+@media(max-width:420px){.match-rule-select button{font-size:11px}.intro h1{font-size:30px}}
+
+/* Three solo paths: easy tutorial, untimed 6+ practice, timed 6+ challenge. */
+.solo-mode-select{grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}.solo-mode-select button{white-space:normal;line-height:1.45;padding:10px 2px;font-size:11px;min-height:46px}

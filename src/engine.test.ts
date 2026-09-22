@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {COLORS,generatePuzzle,hasWall,isCenter,replay,samePoint,slide,type Robots} from './engine';
-const robots:Robots={blue:{x:0,y:0},pink:{x:1,y:0},green:{x:4,y:5},yellow:{x:6,y:13},slate:{x:9,y:9}};
+const robots:Robots={blue:{x:0,y:0},pink:{x:1,y:0},green:{x:4,y:5},yellow:{x:6,y:13},slate:{x:9,y:12}};
 describe('slide rules',()=>{
   it('stops immediately before another robot',()=>{const moved=slide(robots,'blue','right');expect(moved).toBeNull();});
   it('does not mutate source robot state',()=>{const before=structuredClone(robots);slide(robots,'blue','down');expect(robots).toEqual(before);});

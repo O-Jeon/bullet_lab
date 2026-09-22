@@ -1,0 +1,701 @@
+[
+  {
+    "seed": 3,
+    "robots": {
+      "blue": {
+        "x": 13,
+        "y": 5
+      },
+      "pink": {
+        "x": 13,
+        "y": 10
+      },
+      "green": {
+        "x": 16,
+        "y": 10
+      },
+      "yellow": {
+        "x": 0,
+        "y": 17
+      },
+      "slate": {
+        "x": 6,
+        "y": 18
+      }
+    },
+    "target": "yellow",
+    "goal": {
+      "x": 6,
+      "y": 13
+    },
+    "solution": [
+      {
+        "robot": "yellow",
+        "direction": "up"
+      },
+      {
+        "robot": "yellow",
+        "direction": "right"
+      }
+    ],
+    "minimum": 2
+  },
+  {
+    "seed": 4,
+    "robots": {
+      "blue": {
+        "x": 18,
+        "y": 6
+      },
+      "pink": {
+        "x": 4,
+        "y": 1
+      },
+      "green": {
+        "x": 4,
+        "y": 10
+      },
+      "yellow": {
+        "x": 1,
+        "y": 19
+      },
+      "slate": {
+        "x": 12,
+        "y": 13
+      }
+    },
+    "target": "yellow",
+    "goal": {
+      "x": 11,
+      "y": 19
+    },
+    "solution": [
+      {
+        "robot": "slate",
+        "direction": "down"
+      },
+      {
+        "robot": "yellow",
+        "direction": "right"
+      }
+    ],
+    "minimum": 2
+  },
+  {
+    "seed": 12,
+    "robots": {
+      "blue": {
+        "x": 5,
+        "y": 1
+      },
+      "pink": {
+        "x": 11,
+        "y": 18
+      },
+      "green": {
+        "x": 3,
+        "y": 0
+      },
+      "yellow": {
+        "x": 13,
+        "y": 12
+      },
+      "slate": {
+        "x": 11,
+        "y": 14
+      }
+    },
+    "target": "blue",
+    "goal": {
+      "x": 9,
+      "y": 0
+    },
+    "solution": [
+      {
+        "robot": "blue",
+        "direction": "up"
+      },
+      {
+        "robot": "blue",
+        "direction": "right"
+      }
+    ],
+    "minimum": 2
+  },
+  {
+    "seed": 15,
+    "robots": {
+      "blue": {
+        "x": 4,
+        "y": 8
+      },
+      "pink": {
+        "x": 8,
+        "y": 8
+      },
+      "green": {
+        "x": 4,
+        "y": 13
+      },
+      "yellow": {
+        "x": 18,
+        "y": 6
+      },
+      "slate": {
+        "x": 1,
+        "y": 7
+      }
+    },
+    "target": "pink",
+    "goal": {
+      "x": 12,
+      "y": 19
+    },
+    "solution": [
+      {
+        "robot": "pink",
+        "direction": "right"
+      },
+      {
+        "robot": "pink",
+        "direction": "down"
+      }
+    ],
+    "minimum": 2
+  },
+  {
+    "seed": 1,
+    "robots": {
+      "blue": {
+        "x": 15,
+        "y": 5
+      },
+      "pink": {
+        "x": 3,
+        "y": 0
+      },
+      "green": {
+        "x": 8,
+        "y": 11
+      },
+      "yellow": {
+        "x": 4,
+        "y": 13
+      },
+      "slate": {
+        "x": 10,
+        "y": 15
+      }
+    },
+    "target": "blue",
+    "goal": {
+      "x": 19,
+      "y": 19
+    },
+    "solution": [
+      {
+        "robot": "blue",
+        "direction": "up"
+      },
+      {
+        "robot": "blue",
+        "direction": "right"
+      },
+      {
+        "robot": "blue",
+        "direction": "down"
+      }
+    ],
+    "minimum": 3
+  },
+  {
+    "seed": 2,
+    "robots": {
+      "blue": {
+        "x": 19,
+        "y": 16
+      },
+      "pink": {
+        "x": 0,
+        "y": 19
+      },
+      "green": {
+        "x": 1,
+        "y": 19
+      },
+      "yellow": {
+        "x": 10,
+        "y": 3
+      },
+      "slate": {
+        "x": 13,
+        "y": 1
+      }
+    },
+    "target": "yellow",
+    "goal": {
+      "x": 12,
+      "y": 19
+    },
+    "solution": [
+      {
+        "robot": "yellow",
+        "direction": "down"
+      },
+      {
+        "robot": "yellow",
+        "direction": "right"
+      },
+      {
+        "robot": "yellow",
+        "direction": "down"
+      }
+    ],
+    "minimum": 3
+  },
+  {
+    "seed": 6,
+    "robots": {
+      "blue": {
+        "x": 10,
+        "y": 0
+      },
+      "pink": {
+        "x": 13,
+        "y": 4
+      },
+      "green": {
+        "x": 10,
+        "y": 1
+      },
+      "yellow": {
+        "x": 0,
+        "y": 18
+      },
+      "slate": {
+        "x": 19,
+        "y": 4
+      }
+    },
+    "target": "slate",
+    "goal": {
+      "x": 19,
+      "y": 11
+    },
+    "solution": [
+      {
+        "robot": "slate",
+        "direction": "left"
+      },
+      {
+        "robot": "slate",
+        "direction": "down"
+      },
+      {
+        "robot": "slate",
+        "direction": "right"
+      }
+    ],
+    "minimum": 3
+  },
+  {
+    "seed": 7,
+    "robots": {
+      "blue": {
+        "x": 10,
+        "y": 5
+      },
+      "pink": {
+        "x": 19,
+        "y": 4
+      },
+      "green": {
+        "x": 17,
+        "y": 3
+      },
+      "yellow": {
+        "x": 2,
+        "y": 3
+      },
+      "slate": {
+        "x": 5,
+        "y": 10
+      }
+    },
+    "target": "yellow",
+    "goal": {
+      "x": 0,
+      "y": 12
+    },
+    "solution": [
+      {
+        "robot": "yellow",
+        "direction": "down"
+      },
+      {
+        "robot": "yellow",
+        "direction": "left"
+      },
+      {
+        "robot": "yellow",
+        "direction": "down"
+      }
+    ],
+    "minimum": 3
+  },
+  {
+    "seed": 5,
+    "robots": {
+      "blue": {
+        "x": 13,
+        "y": 15
+      },
+      "pink": {
+        "x": 4,
+        "y": 12
+      },
+      "green": {
+        "x": 1,
+        "y": 11
+      },
+      "yellow": {
+        "x": 14,
+        "y": 9
+      },
+      "slate": {
+        "x": 18,
+        "y": 4
+      }
+    },
+    "target": "yellow",
+    "goal": {
+      "x": 12,
+      "y": 0
+    },
+    "solution": [
+      {
+        "robot": "yellow",
+        "direction": "up"
+      },
+      {
+        "robot": "yellow",
+        "direction": "right"
+      },
+      {
+        "robot": "yellow",
+        "direction": "up"
+      },
+      {
+        "robot": "yellow",
+        "direction": "left"
+      }
+    ],
+    "minimum": 4
+  },
+  {
+    "seed": 21,
+    "robots": {
+      "blue": {
+        "x": 16,
+        "y": 1
+      },
+      "pink": {
+        "x": 9,
+        "y": 4
+      },
+      "green": {
+        "x": 1,
+        "y": 13
+      },
+      "yellow": {
+        "x": 16,
+        "y": 17
+      },
+      "slate": {
+        "x": 12,
+        "y": 11
+      }
+    },
+    "target": "blue",
+    "goal": {
+      "x": 8,
+      "y": 3
+    },
+    "solution": [
+      {
+        "robot": "blue",
+        "direction": "right"
+      },
+      {
+        "robot": "pink",
+        "direction": "right"
+      },
+      {
+        "robot": "blue",
+        "direction": "down"
+      },
+      {
+        "robot": "blue",
+        "direction": "left"
+      }
+    ],
+    "minimum": 4
+  },
+  {
+    "seed": 23,
+    "robots": {
+      "blue": {
+        "x": 1,
+        "y": 1
+      },
+      "pink": {
+        "x": 12,
+        "y": 6
+      },
+      "green": {
+        "x": 6,
+        "y": 4
+      },
+      "yellow": {
+        "x": 10,
+        "y": 19
+      },
+      "slate": {
+        "x": 16,
+        "y": 0
+      }
+    },
+    "target": "yellow",
+    "goal": {
+      "x": 6,
+      "y": 5
+    },
+    "solution": [
+      {
+        "robot": "yellow",
+        "direction": "left"
+      },
+      {
+        "robot": "yellow",
+        "direction": "up"
+      },
+      {
+        "robot": "yellow",
+        "direction": "right"
+      },
+      {
+        "robot": "yellow",
+        "direction": "up"
+      }
+    ],
+    "minimum": 4
+  },
+  {
+    "seed": 35,
+    "robots": {
+      "blue": {
+        "x": 0,
+        "y": 10
+      },
+      "pink": {
+        "x": 14,
+        "y": 17
+      },
+      "green": {
+        "x": 7,
+        "y": 5
+      },
+      "yellow": {
+        "x": 7,
+        "y": 14
+      },
+      "slate": {
+        "x": 17,
+        "y": 4
+      }
+    },
+    "target": "yellow",
+    "goal": {
+      "x": 11,
+      "y": 2
+    },
+    "solution": [
+      {
+        "robot": "yellow",
+        "direction": "up"
+      },
+      {
+        "robot": "yellow",
+        "direction": "left"
+      },
+      {
+        "robot": "yellow",
+        "direction": "up"
+      },
+      {
+        "robot": "yellow",
+        "direction": "right"
+      }
+    ],
+    "minimum": 4
+  },
+  {
+    "seed": 34,
+    "robots": {
+      "blue": {
+        "x": 8,
+        "y": 18
+      },
+      "pink": {
+        "x": 19,
+        "y": 8
+      },
+      "green": {
+        "x": 17,
+        "y": 5
+      },
+      "yellow": {
+        "x": 13,
+        "y": 5
+      },
+      "slate": {
+        "x": 15,
+        "y": 18
+      }
+    },
+    "target": "pink",
+    "goal": {
+      "x": 10,
+      "y": 19
+    },
+    "solution": [
+      {
+        "robot": "blue",
+        "direction": "right"
+      },
+      {
+        "robot": "pink",
+        "direction": "down"
+      },
+      {
+        "robot": "pink",
+        "direction": "left"
+      },
+      {
+        "robot": "blue",
+        "direction": "down"
+      },
+      {
+        "robot": "pink",
+        "direction": "right"
+      }
+    ],
+    "minimum": 5
+  },
+  {
+    "seed": 83,
+    "robots": {
+      "blue": {
+        "x": 14,
+        "y": 5
+      },
+      "pink": {
+        "x": 11,
+        "y": 11
+      },
+      "green": {
+        "x": 13,
+        "y": 7
+      },
+      "yellow": {
+        "x": 4,
+        "y": 7
+      },
+      "slate": {
+        "x": 2,
+        "y": 18
+      }
+    },
+    "target": "green",
+    "goal": {
+      "x": 11,
+      "y": 0
+    },
+    "solution": [
+      {
+        "robot": "green",
+        "direction": "up"
+      },
+      {
+        "robot": "green",
+        "direction": "left"
+      },
+      {
+        "robot": "green",
+        "direction": "up"
+      },
+      {
+        "robot": "green",
+        "direction": "right"
+      },
+      {
+        "robot": "green",
+        "direction": "up"
+      }
+    ],
+    "minimum": 5
+  },
+  {
+    "seed": 177,
+    "robots": {
+      "blue": {
+        "x": 12,
+        "y": 3
+      },
+      "pink": {
+        "x": 11,
+        "y": 13
+      },
+      "green": {
+        "x": 16,
+        "y": 10
+      },
+      "yellow": {
+        "x": 4,
+        "y": 9
+      },
+      "slate": {
+        "x": 0,
+        "y": 9
+      }
+    },
+    "target": "yellow",
+    "goal": {
+      "x": 18,
+      "y": 7
+    },
+    "solution": [
+      {
+        "robot": "slate",
+        "direction": "up"
+      },
+      {
+        "robot": "yellow",
+        "direction": "left"
+      },
+      {
+        "robot": "slate",
+        "direction": "right"
+      },
+      {
+        "robot": "yellow",
+        "direction": "up"
+      },
+      {
+        "robot": "yellow",
+        "direction": "right"
+      }
+    ],
+    "minimum": 5
+  }
+]

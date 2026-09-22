@@ -6,6 +6,8 @@ export const LABELS:Record<RobotColor,string>={blue:'블루',pink:'핑크',green
 export const HEX:Record<RobotColor,string>={blue:'#4b9ce5',pink:'#ef7fbb',green:'#55b77a',yellow:'#f1c44a',slate:'#64748b'};
 export const ICONS:Record<Direction,string>={up:'↑',down:'↓',left:'←',right:'→'};
 export const pad=(n:number)=>String(n).padStart(2,'0');
+const CELL=640/SIZE;
+const CENTER=(SIZE/2-1)*CELL;
 
 type Props={puzzle:PublicPuzzle;robots:Robots;selected:RobotColor;onSelect:(color:RobotColor)=>void;onMove:(direction:Direction)=>void;disabled?:boolean};
 
@@ -13,23 +15,23 @@ export function GameBoard({puzzle,robots,selected,onSelect,onMove,disabled=false
   const gestureStart=useRef<{x:number;y:number}|null>(null);
   return <div className="board-wrap">
     <svg className="gameboard" viewBox="0 0 640 640" role="img"
-      aria-label="16×16 게임판. 로봇을 선택한 후 방향 버튼이나 키보드 방향키로 움직이세요."
+      aria-label={`${SIZE}×${SIZE} 게임판. 로봇을 선택한 후 방향 버튼이나 키보드 방향키로 움직이세요.`}
       onTouchStart={e=>{gestureStart.current={x:e.touches[0].clientX,y:e.touches[0].clientY};}}
       onTouchEnd={e=>{if(disabled||!gestureStart.current)return;const dx=e.changedTouches[0].clientX-gestureStart.current.x,dy=e.changedTouches[0].clientY-gestureStart.current.y;gestureStart.current=null;if(Math.max(Math.abs(dx),Math.abs(dy))<26)return;onMove(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'));}}>
       <rect x="0" y="0" width="640" height="640" rx="12" fill="#eef3f8"/>
-      {Array.from({length:SIZE*SIZE},(_,i)=>{const x=i%SIZE,y=Math.floor(i/SIZE);return <rect key={i} x={x*40+2} y={y*40+2} width="36" height="36" rx="2" fill={isCenter({x,y})?'#344155':'#fff'}/>;})}
-      <rect x="282" y="282" width="76" height="76" rx="4" fill="#344155"/>
+      {Array.from({length:SIZE*SIZE},(_,i)=>{const x=i%SIZE,y=Math.floor(i/SIZE);return <rect key={i} x={x*CELL+1.5} y={y*CELL+1.5} width={CELL-3} height={CELL-3} rx="2" fill={isCenter({x,y})?'#344155':'#fff'}/>;})}
+      <rect x={CENTER+2} y={CENTER+2} width={2*CELL-4} height={2*CELL-4} rx="4" fill="#344155"/>
       <text x="320" y="317" fontSize="12" textAnchor="middle" fill="#f9fafb" fontWeight="800" letterSpacing="1.8">BULLET</text>
       <text x="320" y="335" fontSize="13" textAnchor="middle" fill="#a9cff2" fontWeight="800" letterSpacing="2">LAB</text>
-      {getWallSegments().map(([x,y,d],i)=>{const right=d==='right',down=d==='down';const x1=right?(x+1)*40:x*40;const y1=down?(y+1)*40:y*40;const x2=right?x1:(x+1)*40;const y2=down?y1:(y+1)*40;return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#394455" strokeWidth="6" strokeLinecap="square"/>;})}
-      <rect x={puzzle.goal.x*40+7} y={puzzle.goal.y*40+7} width="26" height="26" rx="5" fill="#e99239" stroke="#fff" strokeWidth="2"/>
-      <text x={puzzle.goal.x*40+20} y={puzzle.goal.y*40+26} textAnchor="middle" fontSize="17" fontWeight="900" fill="#fff">G</text>
+      {getWallSegments().map(([x,y,d],i)=>{const right=d==='right',down=d==='down';const x1=right?(x+1)*CELL:x*CELL;const y1=down?(y+1)*CELL:y*CELL;const x2=right?x1:(x+1)*CELL;const y2=down?y1:(y+1)*CELL;return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#394455" strokeWidth={CELL*.17} strokeLinecap="square"/>;})}
+      <rect x={puzzle.goal.x*CELL+CELL*.18} y={puzzle.goal.y*CELL+CELL*.18} width={CELL*.64} height={CELL*.64} rx="5" fill="#e99239" stroke="#fff" strokeWidth="2"/>
+      <text x={puzzle.goal.x*CELL+CELL/2} y={puzzle.goal.y*CELL+CELL*.70} textAnchor="middle" fontSize={CELL*.54} fontWeight="900" fill="#fff">G</text>
       {COLORS.map(color=>{const p=robots[color];const active=selected===color;return <g key={color} role="button" aria-label={`${LABELS[color]} 로봇 선택`} tabIndex={0}
         onClick={()=>onSelect(color)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onSelect(color);}}} style={{cursor:'pointer'}}>
-        {active&&<circle cx={p.x*40+20} cy={p.y*40+20} r="21" fill="none" stroke={HEX[color]} strokeWidth="3" strokeDasharray="4 3"/>}
-        <circle cx={p.x*40+20} cy={p.y*40+20} r="15" fill={HEX[color]} stroke="#fff" strokeWidth="3"/>
-        <line x1={p.x*40+16} y1={p.y*40+27} x2={p.x*40+24} y2={p.y*40+13} stroke="#172033" strokeWidth="2.5" strokeLinecap="round"/>
-        <circle cx={p.x*40+20} cy={p.y*40+20} r="17" fill="transparent"/>
+        {active&&<circle cx={p.x*CELL+CELL/2} cy={p.y*CELL+CELL/2} r={CELL*.46} fill="none" stroke={HEX[color]} strokeWidth="3" strokeDasharray="4 3"/>}
+        <circle cx={p.x*CELL+CELL/2} cy={p.y*CELL+CELL/2} r={CELL*.36} fill={HEX[color]} stroke="#fff" strokeWidth="3"/>
+        <line x1={p.x*CELL+CELL*.39} y1={p.y*CELL+CELL*.69} x2={p.x*CELL+CELL*.61} y2={p.y*CELL+CELL*.31} stroke="#172033" strokeWidth="2.5" strokeLinecap="round"/>
+        <circle cx={p.x*CELL+CELL/2} cy={p.y*CELL+CELL/2} r={CELL*.46} fill="transparent"/>
       </g>;})}
     </svg>
   </div>;

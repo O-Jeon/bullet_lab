@@ -1,5 +1,5 @@
 /** No browser or React dependencies: shared by the UI and future authoritative server. */
-export const SIZE = 16;
+export const SIZE = 20;
 export const COLORS = ['blue', 'pink', 'green', 'yellow', 'slate'] as const;
 export type RobotColor = (typeof COLORS)[number];
 export type Point = { x: number; y: number };
@@ -21,13 +21,19 @@ const wallSegments: Array<[number, number, Direction]> = [
   [7,3,'right'],[6,4,'down'],[14,3,'down'],[1,5,'down'],[3,6,'right'],[12,5,'right'],[13,5,'down'],
   [0,6,'down'],[3,7,'down'],[4,9,'right'],[5,9,'down'],[10,8,'down'],[12,8,'right'],[2,10,'down'],[4,10,'right'],
   [10,10,'right'],[14,11,'down'],[1,12,'down'],[10,12,'right'],[6,13,'right'],[13,13,'right'],[3,14,'down'],
-  [4,15,'right'],[11,14,'down'],[13,14,'right'],[14,15,'right'],[0,12,'down'],[9,11,'down'],[15,10,'down']
+  [4,15,'right'],[11,14,'down'],[13,14,'right'],[14,15,'right'],[0,12,'down'],[9,11,'down'],[15,10,'down'],
+  // Additional fixed walls distribute stopping points across the larger 20x20 board.
+  [16,1,'down'],[17,2,'right'],[18,4,'down'],[15,5,'right'],[17,7,'down'],
+  [16,9,'right'],[18,10,'down'],[17,12,'right'],[15,14,'down'],[18,15,'right'],
+  [16,17,'down'],[18,18,'right'],[3,17,'right'],[5,18,'down'],[7,16,'right'],
+  [9,17,'down'],[11,18,'right'],[13,16,'down'],[1,17,'down'],[7,18,'down'],
+  [12,16,'right'],[15,18,'down'],[0,17,'right'],[8,15,'down'],[18,6,'right'],[11,7,'down']
 ];
 for (const [x,y,direction] of wallSegments) {
   const v = VECTORS[direction];
   addWall({x,y}, { x:x+v.x, y:y+v.y });
 }
-export const isCenter = ({x,y}:Point) => (x === 7 || x === 8) && (y === 7 || y === 8);
+export const isCenter = ({x,y}:Point) => (x === 9 || x === 10) && (y === 9 || y === 10);
 export const inBounds = ({x,y}:Point) => x>=0 && x<SIZE && y>=0 && y<SIZE;
 export const hasWall = (a:Point,b:Point) => walls.has(edgeKey(a,b));
 export const getWallSegments = () => wallSegments;
